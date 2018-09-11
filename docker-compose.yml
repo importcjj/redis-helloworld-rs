@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  redis:
+    image: redis:5.0-rc
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./target:/target/
+    entrypoint:
+      - redis-server
+      - /usr/local/etc/redis/redis.conf
+    depends_on:
+      - rust
+    
+  rust:
+    image: rust:1.28.0
+    volumes:
+      - .:/usr/src/myapp
+    working_dir: /usr/src/myapp
+    entrypoint:
+      - cargo
+      - build
+    
